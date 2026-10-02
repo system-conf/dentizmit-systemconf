@@ -54,6 +54,121 @@ final class Module implements ModuleInterface
             'callback'            => [$this, 'replaceWidget'],
             'permission_callback' => static fn(): bool => current_user_can('manage_options'),
         ]);
+
+        register_rest_route(self::NAMESPACE, '/elementor-resolve-dynamic', [
+            'methods'             => 'POST',
+            'callback'            => [$this, 'resolveDynamic'],
+            'permission_callback' => static fn(): bool => current_user_can('manage_options'),
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/elementor-patch-settings', [
+            'methods'             => 'POST',
+            'callback'            => [$this, 'patchSettings'],
+            'permission_callback' => static fn(): bool => current_user_can('manage_options'),
+        ]);
+    }
+
+    /** Dinamik etiketleri kalıcı değere çevirir. Gövde: {post_id} */
+    public function resolveDynamic(WP_REST_Request $request)
+    {
+        $postId = (int) $request->get_param('post_id');
+        $tree = $this->loadTree($postId);
+
+        if ($tree instanceof WP_Error) {
+            return $tree;
+        }
+
+        $resolver = new DynamicResolver($postId);
+        $tree = $resolver->resolve($tree);
+
+        if ($resolver->resolvedCount() > 0) {
+            $this->saveTree($postId, $tree);
+        }
+
+        return new WP_REST_Response([
+            'post_id'  => $postId,
+            'resolved' => $resolver->resolvedCount(),
+            'unknown'  => $resolver->unknownTags(),
+        ]);
+    }
+
+    /** Bir öğenin ayarlarını birleştirir. Gövde: {post_id, element_id, settings} */
+    public function patchSettings(WP_REST_Request $request)
+    {
+        $postId = (int) $request->get_param('post_id');
+        $elementId = sanitize_text_field((string) $request->get_param('element_id'));
+        $patch = $request->get_param('settings');
+
+        if ($elementId === '' || !is_array($patch)) {
+            return new WP_Error('systemconf_bad_request', 'element_id ve settings zorunlu.', ['status' => 400]);
+        }
+
+        $tree = $this->loadTree($postId);
+        if ($tree instanceof WP_Error) {
+            return $tree;
+        }
+
+        $count = 0;
+        $tree = $this->patchTree($tree, $elementId, $patch, $count);
+
+        if ($count === 0) {
+            return new WP_Error('systemconf_element_not_found', 'Öğe bulunamadı: ' . $elementId, ['status' => 404]);
+        }
+
+        $this->saveTree($postId, $tree);
+
+        return new WP_REST_Response(['post_id' => $postId, 'patched' => $count]);
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $elements
+     * @param array<string, mixed>             $patch
+     * @return array<int, array<string, mixed>>
+     */
+    private function patchTree(array $elements, string $elementId, array $patch, int &$count): array
+    {
+        foreach ($elements as $i => $element) {
+            if (!is_array($element)) {
+                continue;
+            }
+            if (($element['id'] ?? '') === $elementId) {
+                $elements[$i]['settings'] = array_merge(is_array($element['settings'] ?? null) ? $element['settings'] : [], $patch);
+                $count++;
+            }
+            if (!empty($element['elements']) && is_array($element['elements'])) {
+                $elements[$i]['elements'] = $this->patchTree($element['elements'], $elementId, $patch, $count);
+            }
+        }
+
+        return $elements;
+    }
+
+    /** @return array<int, array<string, mixed>>|WP_Error */
+    private function loadTree(int $postId)
+    {
+        if ($postId <= 0) {
+            return new WP_Error('systemconf_bad_request', 'post_id zorunlu.', ['status' => 400]);
+        }
+
+        $raw = get_post_meta($postId, '_elementor_data', true);
+        $tree = is_string($raw) && $raw !== '' ? json_decode($raw, true) : null;
+
+        if (!is_array($tree)) {
+            return new WP_Error('systemconf_no_data', 'Bu içerikte Elementor verisi yok.', ['status' => 404]);
+        }
+
+        return $tree;
+    }
+
+    /** @param array<int, array<string, mixed>> $tree */
+    private function saveTree(int $postId, array $tree): void
+    {
+        update_post_meta($postId, '_elementor_data', wp_slash(wp_json_encode($tree, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+        delete_post_meta($postId, '_elementor_css');
+
+        if (class_exists('\Elementor\Plugin')) {
+            \Elementor\Plugin::$instance->files_manager->clear_cache();
+        }
     }
 
     /**
@@ -104,12 +219,7 @@ final class Module implements ModuleInterface
             return new WP_Error('systemconf_widget_not_found', 'Hiçbir bileşen bulunamadı.', ['status' => 404]);
         }
 
-        update_post_meta($postId, '_elementor_data', wp_slash(wp_json_encode($tree, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
-        delete_post_meta($postId, '_elementor_css');
-
-        if (class_exists('\Elementor\Plugin')) {
-            \Elementor\Plugin::$instance->files_manager->clear_cache();
-        }
+        $this->saveTree($postId, $tree);
 
         return new WP_REST_Response(['post_id' => $postId, 'replaced' => $replaced]);
     }
