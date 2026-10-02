@@ -62,6 +62,16 @@ final class Settings
 
     private function renderUsage(): void
     {
+        $lastError = get_option(Mailer::LAST_ERROR_OPTION);
+        if (is_array($lastError) && !empty($lastError['message'])) {
+            printf(
+                '<div class="notice notice-warning inline"><p><strong>%s</strong> %s<br><code>%s</code></p></div>',
+                esc_html__('Son e-posta hatası:', 'systemconf'),
+                esc_html((string) ($lastError['time'] ?? '')),
+                esc_html((string) $lastError['message'])
+            );
+        }
+
         echo '<h2>' . esc_html__('Kısa kodlar', 'systemconf') . '</h2><ul>';
         foreach (Definitions::all() as $id => $def) {
             printf('<li><code>[systemconf_form id="%s"]</code> — %s</li>', esc_html($id), esc_html((string) $def['title']));

@@ -9,6 +9,21 @@ namespace Systemconf\Forms;
  */
 final class Mailer
 {
+    public const LAST_ERROR_OPTION = 'systemconf_forms_last_mail_error';
+
+    /** wp_mail başarısız olduğunda teknik nedeni panelde göstermek için saklar. */
+    public static function captureFailure(\WP_Error $error): void
+    {
+        $data = $error->get_error_data();
+        update_option(self::LAST_ERROR_OPTION, [
+            'message' => $error->get_error_message(),
+            'code'    => $error->get_error_code(),
+            'detail'  => is_array($data) && isset($data['phpmailer_exception_code']) ? (string) $data['phpmailer_exception_code'] : '',
+            'time'    => current_time('mysql'),
+        ], false);
+        error_log('[systemconf] wp_mail hatası: ' . $error->get_error_message());
+    }
+
     /**
      * @param array<string, mixed>  $definition
      * @param array<string, string> $payload  alan id => değer

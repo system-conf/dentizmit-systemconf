@@ -26,6 +26,7 @@ final class Module implements ModuleInterface
         add_action('init', [Repository::class, 'ensureSchema']);
         add_action('admin_init', [$this, 'registerSetting']);
         add_action('rest_api_init', [new Handler(), 'registerRoutes']);
+        add_action('wp_mail_failed', [Mailer::class, 'captureFailure']);
         add_action('wp_enqueue_scripts', [$this, 'registerAssets']);
         add_shortcode('systemconf_form', [$this, 'shortcode']);
     }
