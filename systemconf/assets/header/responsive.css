@@ -1,10 +1,39 @@
 /* Üst menü: dar masaüstü (1025–1300px) ve tablet düzeltmeleri.
    Öğe kimlikleri ElementsKit üst menü şablonundan (id 139). */
 
-/* Dar masaüstünde logo kenardan taşmasın, menü maddeleri tek satırda kalsın */
+/* Menü maddeleri logonun altına girmesin: menü sütununa logo kadar sol boşluk */
+@media (min-width: 1025px) and (max-width: 1500px) {
+  .elementor-element-603668f {
+    padding-left: 290px !important;
+  }
+
+  .elementor-element-e816799 .elementor-social-icons-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+
+  .elementor-element-e816799 .elementor-social-icon {
+    --icon-size: 16px;
+    --icon-padding: .45em;
+    margin: 0 !important;
+  }
+}
+
+/* Dar masaüstünde logo küçülsün ve kenardan taşmasın */
 @media (min-width: 1025px) and (max-width: 1300px) {
   .elementor-element-2ff94a5 {
     left: 0 !important;
+    width: 220px !important;
+  }
+
+  .elementor-element-2ff94a5 img {
+    width: 220px !important;
+  }
+
+  .elementor-element-603668f {
+    padding-left: 235px !important;
   }
 
   .elementor-element-935da38 .ekit-menu-nav-item > a,
