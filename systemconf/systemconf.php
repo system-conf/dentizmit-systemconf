@@ -3,7 +3,7 @@
  * Plugin Name: Systemconf
  * Plugin URI:  https://dentizmit.com
  * Description: Dent İzmit sitesine özel sistem bileşenleri (WhatsApp destek düğmesi ve diğer modüller).
- * Version:     1.7.0
+ * Version:     1.7.1
  * Author:      Mango Medya
  * License:     GPL-2.0-or-later
  * Text Domain: systemconf
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SYSTEMCONF_VERSION', '1.7.0');
+define('SYSTEMCONF_VERSION', '1.7.1');
 define('SYSTEMCONF_FILE', __FILE__);
 define('SYSTEMCONF_DIR', plugin_dir_path(__FILE__));
 define('SYSTEMCONF_URL', plugin_dir_url(__FILE__));
