@@ -1,0 +1,85 @@
+.scpu {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  overflow: auto;
+  padding: 16px;
+  background: rgba(0, 0, 0, .6);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  opacity: 1;
+  transition: opacity .35s ease;
+}
+
+.scpu[hidden] { display: none; }
+.scpu--hidden { opacity: 0; pointer-events: none; }
+
+.scpu .scpu__box {
+  position: relative;
+  box-sizing: content-box;
+  width: var(--scpu-width, 800px);
+  max-width: calc(100vw - 32px - 52px);
+  margin: auto;
+  padding: 18px;
+  background: var(--scpu-bg, #fff);
+  border: 8px solid var(--scpu-accent, #000);
+  border-radius: 3px;
+  box-shadow: 0 0 30px rgba(2, 2, 2, 1);
+  outline: 0;
+}
+
+.scpu__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.scpu__content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.scpu__content > :first-child { margin-top: 0; }
+.scpu__content > :last-child { margin-bottom: 0; }
+
+/* Tema ve Elementor'ün genel "button" kuralları ezmesin diye kapatma
+   düğmesinin renk, kenarlık ve iç boşluğu zorlanır. */
+.scpu .scpu__close {
+  position: absolute;
+  top: -13px;
+  right: -13px;
+  z-index: 2;
+  box-sizing: border-box !important;
+  width: 26px !important;
+  height: 26px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--scpu-accent, #000) !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  border-radius: 26px !important;
+  box-shadow: 0 0 15px 1px rgba(2, 2, 2, .75) !important;
+  font-family: inherit !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  cursor: pointer;
+}
+
+.scpu .scpu__close:hover,
+.scpu .scpu__close:focus {
+  background: var(--scpu-accent, #000) !important;
+  color: #fff !important;
+}
+
+html.scpu-lock { overflow: hidden; }

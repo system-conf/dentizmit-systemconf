@@ -9,6 +9,7 @@ use Systemconf\Blocks\Module as BlocksModule;
 use Systemconf\Forms\Module as FormsModule;
 use Systemconf\Header\Module as HeaderModule;
 use Systemconf\Mail\Module as MailModule;
+use Systemconf\Popup\Module as PopupModule;
 use Systemconf\Theme\Module as ThemeModule;
 use Systemconf\Tools\Module as ToolsModule;
 use Systemconf\Updater\Module as UpdaterModule;
@@ -37,6 +38,7 @@ final class Plugin
     {
         $this->modules = [
             new WhatsappModule(),
+            new PopupModule(),
             new FormsModule(),
             new MailModule(),
             new BlocksModule(),
