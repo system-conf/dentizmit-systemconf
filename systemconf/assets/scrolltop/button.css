@@ -1,0 +1,59 @@
+/* Yukarı Çık düğmesi. Renk/boyut/konum değişkenleri satır içi stilden gelir.
+   Yan konum (left/right) satır içi stilde, kutulu düzen payıyla birlikte verilir.
+   Tema ve Elementor'ün genel "button" kuralları ezmesin diye kritik özellikler
+   !important ile zorlanır. */
+.scst {
+  position: fixed !important;
+  bottom: var(--scst-bottom, 20px) !important;
+  z-index: 9998 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--scst-size, 42px) !important;
+  height: var(--scst-size, 42px) !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: var(--scst-radius, 7px) !important;
+  background: var(--scst-bg, #dd0000) !important;
+  color: var(--scst-icon, #fff) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .25) !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  cursor: pointer;
+  opacity: 1;
+  transform: none;
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.scst:hover,
+.scst:focus {
+  background: var(--scst-bg, #dd0000) !important;
+  color: var(--scst-icon, #fff) !important;
+  transform: translateY(-2px);
+}
+
+.scst:focus-visible {
+  outline: 2px solid var(--scst-icon, #fff) !important;
+  outline-offset: 2px !important;
+}
+
+.scst svg {
+  width: 60% !important;
+  height: 60% !important;
+  display: block;
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+.scst.scst--hidden {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scst { transition: none; }
+}

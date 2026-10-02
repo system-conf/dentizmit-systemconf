@@ -12,6 +12,7 @@ use Systemconf\Layout\Module as LayoutModule;
 use Systemconf\Mail\Module as MailModule;
 use Systemconf\Navbar\Module as NavbarModule;
 use Systemconf\Popup\Module as PopupModule;
+use Systemconf\ScrollTop\Module as ScrollTopModule;
 use Systemconf\Theme\Module as ThemeModule;
 use Systemconf\Tools\Module as ToolsModule;
 use Systemconf\Updater\Module as UpdaterModule;
@@ -40,6 +41,7 @@ final class Plugin
     {
         $this->modules = [
             new WhatsappModule(),
+            new ScrollTopModule(),
             new PopupModule(),
             new FormsModule(),
             new MailModule(),

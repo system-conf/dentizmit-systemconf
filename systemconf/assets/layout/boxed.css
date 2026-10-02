@@ -34,6 +34,11 @@ body {
 .scwa--left { left: calc(var(--sc-gutter) + var(--scwa-side, 20px)); }
 .scwa--right { right: calc(var(--sc-gutter) + var(--scwa-side, 20px)); }
 
+/* Yukarı Çık düğmesi (systemconf, .scst): sağ/sol seçimine göre yan konum
+   ScrollTop modülünün satır içi stilinde calc(var(--sc-gutter) + yan boşluk)
+   olarak verilir; kutulu düzen kapalıyken --sc-gutter 0 sayılır. Burada ek
+   kural gerekmez. */
+
 /* "To Top" eklentisinin yukarı çık düğmesi (sağ 20px) */
 #to_top_scrollup { right: calc(var(--sc-gutter) + 20px) !important; }
 
