@@ -70,6 +70,7 @@ final class Module implements ModuleInterface
         $mailer->SMTPSecure = $c['encryption'] === 'none' ? '' : (string) $c['encryption'];
         $mailer->SMTPAutoTLS = $c['encryption'] !== 'none';
         $mailer->CharSet = 'UTF-8';
+        $mailer->Timeout = 15; // Sunucu yanıt vermezse sayfa dakikalarca askıda kalmasın.
     }
 
     public function fromEmail(string $email): string

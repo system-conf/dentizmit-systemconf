@@ -30,6 +30,8 @@ final class Module implements ModuleInterface
     public function register(): void
     {
         add_action('rest_api_init', [$this, 'registerRoutes']);
+        add_action('rest_api_init', [new Options(), 'registerRoutes']);
+        add_action('rest_api_init', [new UpdateRunner(), 'registerRoutes']);
     }
 
     public function registerRoutes(): void
