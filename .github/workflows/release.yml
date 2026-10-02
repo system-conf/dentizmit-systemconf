@@ -1,0 +1,39 @@
+name: Sürüm yayınla
+
+# v1.2.3 biçiminde bir etiket gönderildiğinde eklentiyi paketler ve
+# GitHub sürümü olarak yayınlar. Sitedeki systemconf bu sürümü görüp
+# WordPress güncelleme ekranına düşürür.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kaynağı al
+        uses: actions/checkout@v4
+
+      - name: Etiket ile eklenti sürümünü karşılaştır
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PLUGIN=$(grep -E "^ \* Version:" systemconf/systemconf.php | sed -E 's/.*Version:[[:space:]]*//')
+          echo "etiket=$TAG eklenti=$PLUGIN"
+          if [ "$TAG" != "$PLUGIN" ]; then
+            echo "Etiket ($TAG) ile eklenti sürümü ($PLUGIN) uyuşmuyor." >&2
+            exit 1
+          fi
+
+      - name: Paketle
+        run: zip -qr systemconf.zip systemconf -x "*.DS_Store"
+
+      - name: Sürümü yayınla
+        uses: softprops/action-gh-release@v2
+        with:
+          files: systemconf.zip
+          generate_release_notes: true
