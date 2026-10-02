@@ -34,11 +34,14 @@ final class Module implements ModuleInterface
         wp_register_style('systemconf-blocks', SYSTEMCONF_URL . 'assets/blocks/blocks.css', [], SYSTEMCONF_VERSION);
     }
 
-    public function services(): string
+    /** @param array<string, mixed>|string $atts */
+    public function services($atts): string
     {
         wp_enqueue_style('systemconf-blocks');
 
-        return (new ServiceCards())->render();
+        $atts = shortcode_atts(['kart' => 0], is_array($atts) ? $atts : [], 'systemconf_hizmetler');
+
+        return (new ServiceCards())->render((int) $atts['kart']);
     }
 
     /** @param array<string, mixed>|string $atts */

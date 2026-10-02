@@ -5,6 +5,8 @@
   gap: 18px;
 }
 
+.scb-services--single { display: block; }
+
 .scb-flip {
   display: block;
   perspective: 1200px;

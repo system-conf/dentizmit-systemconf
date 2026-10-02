@@ -10,11 +10,23 @@ namespace Systemconf\Blocks;
  */
 final class ServiceCards
 {
-    public function render(): string
+    /**
+     * $index verilirse (1'den başlar) yalnızca o kart basılır; Elementor sütunları
+     * içinde tek tek yerleştirmek için. Verilmezse 6 kartlık ızgara basılır.
+     */
+    public function render(int $index = 0): string
     {
+        $services = Services::all();
+
+        if ($index > 0) {
+            $service = $services[$index - 1] ?? null;
+
+            return $service === null ? '' : '<div class="scb-services scb-services--single">' . $this->card($service) . '</div>';
+        }
+
         $html = '<div class="scb-services">';
 
-        foreach (Services::all() as $service) {
+        foreach ($services as $service) {
             $html .= $this->card($service);
         }
 
