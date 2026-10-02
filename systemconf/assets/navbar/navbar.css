@@ -47,7 +47,7 @@ body.admin-bar .scnb { --scnb-offset: 32px; }
   grid-template-columns: var(--scnb-logo-w) minmax(0, 1fr);
   grid-template-rows: var(--scnb-top-h) var(--scnb-bar-h);
   column-gap: var(--scnb-gap);
-  max-width: 1640px;
+  max-width: 1400px;  /* Elementor içerik genişliğiyle aynı hiza */
   margin: 0 auto;
   padding: 0 var(--scnb-side);
 }
