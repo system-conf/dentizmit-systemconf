@@ -1,0 +1,4 @@
+.wpapi.curlrc
+.env
+*.zip
+.DS_Store
