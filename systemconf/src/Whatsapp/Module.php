@@ -80,12 +80,21 @@ final class Module implements ModuleInterface
 
     public function renderWidget(): void
     {
+        // Bazı tema/eklenti bileşimleri wp_footer kancasını iki kez çalıştırıyor;
+        // düğme sayfada yalnızca bir kez basılmalı.
+        static $rendered = false;
+
+        if ($rendered) {
+            return;
+        }
+
         $config = Config::load();
 
         if (!$this->shouldRender($config)) {
             return;
         }
 
+        $rendered = true;
         (new View($config))->render();
     }
 

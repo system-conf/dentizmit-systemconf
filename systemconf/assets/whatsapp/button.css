@@ -22,24 +22,37 @@
 
 .scwa--right .scwa__launcher { flex-direction: row-reverse; }
 
-.scwa__button {
-  width: 58px;
-  height: 58px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--scwa-button, #25d366);
-  color: #fff;
+/* Tema ve Elementor'ün genel "button" kuralları ezmesin diye bu üç düğmede
+   renk, kenarlık ve iç boşluk zorlanır. */
+.scwa .scwa__button,
+.scwa .scwa__cta,
+.scwa .scwa__close {
+  border: 0 !important;
+  box-shadow: none;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+}
+
+.scwa .scwa__button {
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 50% !important;
+  background: var(--scwa-button, #25d366) !important;
+  color: #fff !important;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .25) !important;
   transition: transform .15s ease;
-  padding: 0;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.scwa__button:hover { transform: scale(1.06); }
-.scwa__button svg { width: 32px; height: 32px; }
+.scwa .scwa__button:hover { transform: scale(1.06); background: var(--scwa-button, #25d366) !important; }
+.scwa .scwa__button svg { width: 32px; height: 32px; fill: #fff; }
 
 .scwa__tooltip {
   background: #fff;
@@ -74,14 +87,15 @@
 .scwa__header-text { display: flex; flex-direction: column; line-height: 1.25; flex: 1; }
 .scwa__header-text small { opacity: .85; font-size: 12px; }
 
-.scwa__close {
-  background: transparent;
-  border: 0;
-  color: #fff;
-  font-size: 24px;
-  line-height: 1;
+.scwa .scwa__close {
+  background: transparent !important;
+  color: #fff !important;
+  font-size: 24px !important;
   cursor: pointer;
-  padding: 0 4px;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
 }
 
 .scwa__body {
@@ -101,19 +115,19 @@
 
 .scwa__footer { padding: 12px 16px; }
 
-.scwa__cta {
-  width: 100%;
-  border: 0;
-  border-radius: 24px;
-  padding: 12px 16px;
-  background: var(--scwa-button, #25d366);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+.scwa .scwa__cta {
+  width: 100% !important;
+  border-radius: 24px !important;
+  padding: 12px 16px !important;
+  margin: 0 !important;
+  background: var(--scwa-button, #25d366) !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
   cursor: pointer;
 }
 
-.scwa__cta:hover { filter: brightness(.95); }
+.scwa .scwa__cta:hover { filter: brightness(.95); background: var(--scwa-button, #25d366) !important; }
 
 @media (max-width: 480px) {
   .scwa__tooltip { display: none; }
