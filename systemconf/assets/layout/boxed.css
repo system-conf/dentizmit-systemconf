@@ -1,0 +1,48 @@
+/* Kutulu düzen (systemconf Layout modülü).
+   --sclay-max, --sclay-outer, --sclay-inner, --sclay-shadow satır içi stilden gelir.
+
+   Sabit (position: fixed) öğeler için seçilen yöntem: "kenar payı değişkeni".
+   --sc-gutter = kutunun iki yanında kalan boş alan. Sabit öğelerin left/right
+   değerine bu pay eklenir; öğeler pencereye sabit kalmaya devam eder ama
+   kutunun kenarına hizalanır.
+   Neden transform değil: body'ye transform verilirse body, fixed öğelerin
+   kapsayıcısı olur ve öğeler sayfayla birlikte kayar (yapışkanlık bozulur).
+   Not: 100vw kaydırma çubuğunu da içerir; Windows'ta öğeler ~8px daha içeride
+   durur, kutunun dışına taşmaz. */
+
+:root {
+  --sc-gutter: max(0px, calc((100vw - var(--sclay-max, 1440px)) / 2));
+}
+
+html {
+  background: var(--sclay-outer, #e9e9e9) !important;
+}
+
+/* html'e zemin verildiği için body'nin zemini artık tüm tuvale yayılmaz;
+   kutunun içi bu yüzden açıkça boyanır. */
+body {
+  position: relative;
+  max-width: var(--sclay-max, 1440px) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  background-color: var(--sclay-inner, #fff);
+  box-shadow: var(--sclay-shadow, none);
+}
+
+/* WhatsApp düğmesi (systemconf) */
+.scwa--left { left: calc(var(--sc-gutter) + var(--scwa-side, 20px)); }
+.scwa--right { right: calc(var(--sc-gutter) + var(--scwa-side, 20px)); }
+
+/* "To Top" eklentisinin yukarı çık düğmesi (sağ 20px) */
+#to_top_scrollup { right: calc(var(--sc-gutter) + 20px) !important; }
+
+/* Eski yapışkan menü (Header modülü, ElementsKit bölümleri) */
+.sch-fixed {
+  left: var(--sc-gutter) !important;
+  right: var(--sc-gutter) !important;
+  width: auto !important;
+}
+
+/* Tam ekran katmanlar (popup .scpu, arama .scb-overlay) bilerek pencerenin
+   tamamını kaplar: arka planı karartan pencerelerin kenar zeminini de
+   örtmesi beklenen davranıştır; içerikleri zaten ortalı. */

@@ -1,0 +1,393 @@
+/* Yeni üst menü (systemconf Navbar modülü).
+   Ölçüler ElementsKit "header" şablonundan (id 139) alındı:
+   üst satır 61px beyaz, ana satır 66px #313131, menü Poppins 14px/600 büyük harf,
+   düğme 13px/500 #af0505 30px yuvarlak, sosyal simgeler 40px daire / 20px simge. */
+
+/* Boyutlar sabit kırılımlar yerine menünün gerçek genişliğine (W) göre akışkan:
+   W = pencere genişliği; kutulu düzen açıksa min(pencere, kutu genişliği).
+   Böylece kutulu düzende de (ör. 1440px kutu, 1920px ekran) menü sığar.
+   Hesap: 8 madde Poppins 600 büyük harf ≈ 49,3 × yazı boyu px; her genişlikte
+   toplam (logo + menü + büyüteç + düğme + boşluklar) W'den küçük kalır. */
+.scnb {
+  --scnb-w: min(100vw, var(--sclay-max, 100vw));
+  --scnb-offset: 0px;          /* yönetici çubuğu yüksekliği */
+  --scnb-top-h: 61px;          /* beyaz üst satır */
+  --scnb-bar-h: 66px;          /* koyu ana satır */
+  --scnb-logo-w: clamp(140px, calc(var(--scnb-w) * .25 - 140px), 260px);
+  --scnb-logo-stuck-w: calc(var(--scnb-logo-w) * .62);
+  --scnb-fs: clamp(11px, calc(var(--scnb-w) * .00875), 14px);
+  --scnb-pad: clamp(4px, calc(var(--scnb-w) * .0145 - 8.2px), 15px);  /* menü maddesi yan boşluğu */
+  --scnb-gap: clamp(8px, calc(var(--scnb-w) * .01), 16px);
+  --scnb-cta-fs: clamp(12px, calc(var(--scnb-w) * .008125), 13px);
+  --scnb-cta-pad: clamp(16px, calc(var(--scnb-w) * .01875), 30px);
+  --scnb-side: clamp(12px, calc(var(--scnb-w) * .015), 24px);          /* kenar boşluğu */
+  position: relative;
+  z-index: 10000;
+  width: 100%;
+  font-family: Poppins, sans-serif;
+  background: linear-gradient(to bottom, #fff var(--scnb-top-h), var(--scnb-bar, #313131) var(--scnb-top-h));
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+}
+
+body.admin-bar .scnb { --scnb-offset: 32px; }
+
+.scnb--sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  /* Üst satır kayıp gider, koyu ana satır üstte kalır. */
+  top: calc(var(--scnb-offset) - var(--scnb-top-h));
+}
+
+.scnb *,
+.scnb *::before,
+.scnb *::after { box-sizing: border-box; }
+
+.scnb__inner {
+  display: grid;
+  grid-template-columns: var(--scnb-logo-w) minmax(0, 1fr);
+  grid-template-rows: var(--scnb-top-h) var(--scnb-bar-h);
+  column-gap: var(--scnb-gap);
+  max-width: 1640px;
+  margin: 0 auto;
+  padding: 0 var(--scnb-side);
+}
+
+/* ---- Logo: akışın içinde, iki satırı kaplar ---- */
+.scnb__logo {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  align-self: end;
+  display: block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.scnb__logo img {
+  display: block;
+  width: var(--scnb-logo-w);
+  max-width: 100%;
+  height: auto;
+}
+
+.scnb__logotext {
+  display: block;
+  line-height: 1.2;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 18px;
+}
+
+.scnb--stuck .scnb__logo {
+  grid-row: 2;
+  align-self: center;
+}
+
+.scnb--stuck .scnb__logo img { width: var(--scnb-logo-stuck-w); }
+
+/* ---- Üst satır: sosyal simgeler ---- */
+.scnb__top {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.scnb__socials {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+}
+
+.scnb .scnb__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--scnb-accent, #af0505);
+  color: #fff;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+
+.scnb .scnb__social:hover,
+.scnb .scnb__social:focus-visible { opacity: .85; color: #fff; }
+
+/* ---- Ana satır ---- */
+.scnb__bar {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--scnb-gap);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.scnb__nav {
+  flex: 0 1 auto;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+}
+
+.scnb__panelhead,
+.scnb__panelextra { display: none; }
+
+.scnb .scnb__menu {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scnb .scnb__menu li {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scnb .scnb__menu > li { display: flex; }
+
+.scnb .scnb__menu a {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--scnb-pad);
+  color: #fff;
+  font-family: Poppins, sans-serif;
+  font-size: var(--scnb-fs);
+  font-weight: 600;
+  line-height: 24px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+
+.scnb .scnb__menu > li:first-child > a { padding-left: 0; }
+
+.scnb .scnb__menu a:hover,
+.scnb .scnb__menu a:focus-visible,
+.scnb .scnb__menu .current-menu-item > a,
+.scnb .scnb__menu .current-menu-ancestor > a { color: var(--scnb-accent, #af0505); }
+
+/* Alt menü (varsa): fareyle ya da klavyeyle açılır */
+.scnb .scnb__menu .sub-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  background: var(--scnb-bar, #313131);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+.scnb .scnb__menu li:hover > .sub-menu,
+.scnb .scnb__menu li:focus-within > .sub-menu { visibility: visible; opacity: 1; }
+
+.scnb .scnb__menu .sub-menu a { padding: 10px 18px; line-height: 1.4; }
+
+.scnb__search { flex: 0 0 auto; display: flex; align-items: center; }
+
+/* ---- Randevu düğmesi ---- */
+.scnb .scnb__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 15px var(--scnb-cta-pad);
+  border-radius: 30px;
+  background: var(--scnb-accent, #af0505);
+  color: #fff;
+  font-family: Poppins, sans-serif;
+  font-size: var(--scnb-cta-fs);
+  font-weight: 500;
+  line-height: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .2s ease;
+}
+
+.scnb .scnb__cta:hover,
+.scnb .scnb__cta:focus-visible { background: #8a0404; color: #fff; }
+
+.scnb__cta--bar { margin-left: auto; }
+.scnb__ctashort { display: none; }
+
+/* ---- Hamburger (yalnız dar ekranda) ---- */
+.scnb .scnb__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.scnb__burger { display: flex; flex-direction: column; gap: 5px; width: 26px; }
+.scnb__burger span { display: block; height: 3px; border-radius: 2px; background: currentColor; }
+
+.scnb__backdrop { display: none; }
+
+/* 1025–1200: düğme kısa yazıya geçer (kutulu düzen en az 1280px olduğundan
+   bu aralıkta W her zaman pencere genişliğine eşittir). */
+@media (max-width: 1200px) {
+  .scnb__cta--bar .scnb__ctalong { display: none; }
+  .scnb__cta--bar .scnb__ctashort { display: inline; }
+}
+
+/* =========================================================
+   Tablet ve telefon: logo + arama + (kısa düğme) + hamburger;
+   menü sağdan açılan panelde.
+   ========================================================= */
+@media (max-width: 1024px) {
+  .scnb {
+    --scnb-top-h: 0px;
+    --scnb-bar-h: 70px;
+    --scnb-logo-w: 150px;
+    --scnb-side: 16px;
+    --scnb-gap: 10px;
+  }
+
+  .scnb__top { display: none; }
+
+  .scnb__logo,
+  .scnb--stuck .scnb__logo { grid-row: 2; align-self: center; }
+
+  .scnb--stuck .scnb__logo img { width: var(--scnb-logo-w); }
+
+  .scnb__bar { justify-content: flex-end; }
+
+  .scnb .scnb__toggle { display: inline-flex; }
+
+  .scnb__nav {
+    position: fixed;
+    top: var(--scnb-offset);
+    right: var(--sc-gutter, 0px);
+    bottom: 0;
+    z-index: 2;
+    width: min(320px, 85vw);
+    flex-direction: column;
+    overflow-y: auto;
+    white-space: normal;
+    background: var(--scnb-bar, #313131);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, .3);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform .25s ease, visibility 0s linear .25s;
+  }
+
+  .scnb--open .scnb__nav {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform .25s ease, visibility 0s;
+  }
+
+  .scnb__panelhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .scnb .scnb__close {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 34px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .scnb .scnb__menu { flex-direction: column; padding: 8px 0; }
+  .scnb .scnb__menu > li { display: block; }
+
+  .scnb .scnb__menu a,
+  .scnb .scnb__menu > li:first-child > a {
+    padding: 13px 20px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .scnb .scnb__menu .sub-menu {
+    position: static;
+    min-width: 0;
+    padding: 0 0 0 14px;
+    box-shadow: none;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .scnb__panelextra {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 16px 20px 28px;
+  }
+
+  .scnb__cta--panel .scnb__ctalong { display: inline; }
+  .scnb__cta--panel .scnb__ctashort { display: none; }
+
+  .scnb__cta--bar { margin-left: 0; padding: 12px 16px; }
+  .scnb__cta--bar .scnb__ctalong { display: none; }
+  .scnb__cta--bar .scnb__ctashort { display: inline; }
+
+  .scnb__backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, .5);
+  }
+
+  .scnb__backdrop[hidden] { display: none; }
+
+  html.scnb-lock { overflow: hidden !important; }
+}
+
+@media (max-width: 782px) {
+  body.admin-bar .scnb { --scnb-offset: 46px; }
+}
+
+/* Telefon: yönetici çubuğu kayar (sabit değil), düğme panele taşınır */
+@media (max-width: 600px) {
+  body.admin-bar .scnb { --scnb-offset: 0px; }
+  .scnb { --scnb-bar-h: 64px; --scnb-logo-w: 140px; }
+  .scnb__cta--bar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scnb__nav,
+  .scnb--open .scnb__nav { transition: none; }
+}
