@@ -127,7 +127,9 @@
   outline-offset: 2px;
 }
 
-html.scpu-lock { overflow: hidden; }
+/* !important: Üst Menü modülünün yapışkan kipindeki html{overflow:visible!important}
+   kuralı bunu eziyordu; popup açıkken sayfa arkada kayıyordu. */
+html.scpu-lock { overflow: hidden !important; }
 
 @media (prefers-reduced-motion: reduce) {
   .scpu,

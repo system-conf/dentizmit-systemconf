@@ -61,6 +61,8 @@
     }
     lastFocused = document.activeElement;
     root.hidden = false;
+    // display:none'dan çıkan öğenin stilini hemen hesaplat; yoksa açılış geçişi oynamaz.
+    void root.offsetWidth;
     document.documentElement.classList.add('scpu-lock');
     // Gizli durumdan çıkışın geçiş animasyonla oynaması için bir kare bekle.
     window.requestAnimationFrame(function () {

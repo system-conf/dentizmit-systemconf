@@ -117,8 +117,10 @@ final class Module implements ModuleInterface
         );
 
         if ($config['hide_elementskit']) {
-            // Eski üst menü (ElementsKit şablonu) ve temanın kendi başlığı gizlenir.
-            $css .= '.ekit-template-content-header,#site-header.site-header{display:none!important;}';
+            // Eski üst menü (ElementsKit şablonu) ve temanın kendi başlığı gizlenir:
+            // klasik tema (#site-header) ve blok tema (Twenty Twenty-Five vb. başlık şablon parçası).
+            $css .= '.ekit-template-content-header,#site-header.site-header,'
+                . 'header.wp-block-template-part{display:none!important;}';
         }
 
         if ($config['sticky']) {

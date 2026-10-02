@@ -19,13 +19,14 @@ html {
 }
 
 /* html'e zemin verildiği için body'nin zemini artık tüm tuvale yayılmaz;
-   kutunun içi bu yüzden açıkça boyanır. */
+   kutunun içi bu yüzden açıkça boyanır. !important: blok temaların genel
+   stilleri (:root :where(body), özgüllüğü daha yüksek) ayarı eziyordu. */
 body {
   position: relative;
   max-width: var(--sclay-max, 1440px) !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  background-color: var(--sclay-inner, #fff);
+  background-color: var(--sclay-inner, #fff) !important;
   box-shadow: var(--sclay-shadow, none);
 }
 

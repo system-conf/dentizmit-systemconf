@@ -8,7 +8,9 @@ use Systemconf\Admin\Menu;
 use Systemconf\Blocks\Module as BlocksModule;
 use Systemconf\Forms\Module as FormsModule;
 use Systemconf\Header\Module as HeaderModule;
+use Systemconf\Layout\Module as LayoutModule;
 use Systemconf\Mail\Module as MailModule;
+use Systemconf\Navbar\Module as NavbarModule;
 use Systemconf\Popup\Module as PopupModule;
 use Systemconf\Theme\Module as ThemeModule;
 use Systemconf\Tools\Module as ToolsModule;
@@ -42,6 +44,8 @@ final class Plugin
             new FormsModule(),
             new MailModule(),
             new BlocksModule(),
+            new NavbarModule(),
+            new LayoutModule(),
             new ThemeModule(),
             new HeaderModule(),
             new ToolsModule(),
