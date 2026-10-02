@@ -24,7 +24,9 @@
   function measure() {
     targets.forEach(function (t) {
       if (t.fixed) { return; }
-      var rect = t.el.getBoundingClientRect();
+      // Konum, önündeki boşluk tutucunun yerinden ölçülür; böylece başka bir
+      // betik bölümü fixed yapmış olsa bile doğru eşik bulunur.
+      var rect = t.spacer.getBoundingClientRect();
       t.top = rect.top + window.pageYOffset;
     });
   }
@@ -32,7 +34,7 @@
   function update() {
     var y = window.pageYOffset;
     targets.forEach(function (t) {
-      if (t.el.offsetParent === null && !t.fixed) { return; } // gizli (mobil/masaüstü) bölüm
+      if (!t.fixed && window.getComputedStyle(t.el).display === 'none') { return; } // gizli (mobil/masaüstü) bölüm
       var shouldFix = y > t.top + 1;
       if (shouldFix && !t.fixed) {
         t.spacer.style.height = t.el.offsetHeight + 'px';

@@ -32,6 +32,7 @@ final class Module implements ModuleInterface
     public function registerAssets(): void
     {
         wp_register_style('systemconf-blocks', SYSTEMCONF_URL . 'assets/blocks/blocks.css', [], SYSTEMCONF_VERSION);
+        wp_register_script('systemconf-blocks', SYSTEMCONF_URL . 'assets/blocks/blocks.js', [], SYSTEMCONF_VERSION, true);
     }
 
     /** @param array<string, mixed>|string $atts */
@@ -59,11 +60,18 @@ final class Module implements ModuleInterface
         return (new PostsList())->render($atts);
     }
 
-    public function search(): string
+    /** @param array<string, mixed>|string $atts */
+    public function search($atts): string
     {
         wp_enqueue_style('systemconf-blocks');
 
-        return (new SearchForm())->render();
+        $atts = shortcode_atts(['stil' => ''], is_array($atts) ? $atts : [], 'systemconf_arama');
+
+        if ($atts['stil'] === 'ikon') {
+            wp_enqueue_script('systemconf-blocks');
+        }
+
+        return (new SearchForm())->render((string) $atts['stil']);
     }
 
     public function renderSettings(): void

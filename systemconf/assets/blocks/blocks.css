@@ -167,6 +167,85 @@
 
 .scb-search .scb-search__button:hover { background: #000 !important; }
 
+/* ---- Üst menü büyüteç + tam ekran arama ---- */
+.scb-searchtoggle { display: inline-flex; align-items: center; }
+
+.scb-searchtoggle .scb-searchtoggle__button {
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  color: #af0505 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.scb-searchtoggle .scb-searchtoggle__button:hover { color: #bc0f0f !important; }
+
+.scb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, .9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.scb-overlay[hidden] { display: none; }
+body.scb-overlay-open { overflow: hidden; }
+
+.scb-overlay .scb-overlay__close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+  font-size: 44px !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  cursor: pointer;
+}
+
+.scb-overlay__form {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #fff;
+}
+
+.scb-overlay .scb-overlay__input {
+  flex: 1;
+  min-width: 0;
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+  font-size: 32px !important;
+  padding: 14px 0 !important;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.scb-overlay .scb-overlay__input::placeholder { color: rgba(255, 255, 255, .6); }
+
+.scb-overlay .scb-overlay__submit {
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+  cursor: pointer;
+  padding: 8px !important;
+}
+
+.scb-overlay .scb-overlay__submit:hover { color: #ff3b3b !important; }
+
 @media (max-width: 1024px) {
   .scb-services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
