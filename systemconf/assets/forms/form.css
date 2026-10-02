@@ -1,0 +1,104 @@
+.scf {
+  --scf-input-bg: #edf1fc;
+  --scf-input-text: #333;
+  --scf-radius: 30px;
+  --scf-button-bg: #af0505;
+  --scf-button-text: #fff;
+  --scf-label: inherit;
+  --scf-gap: 14px;
+  width: 100%;
+  font-family: inherit;
+}
+
+.scf__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scf-gap);
+}
+
+.scf__field { display: flex; flex-direction: column; gap: 6px; }
+.scf__field--full { flex: 1 1 100%; }
+.scf__field--half { flex: 1 1 calc(50% - var(--scf-gap) / 2); }
+
+.scf__label { color: var(--scf-label); font-weight: 600; font-size: 15px; }
+
+.scf input[type="text"],
+.scf input[type="tel"],
+.scf input[type="email"],
+.scf input[type="date"],
+.scf input[type="time"],
+.scf select,
+.scf textarea {
+  width: 100% !important;
+  box-sizing: border-box;
+  background: var(--scf-input-bg) !important;
+  color: var(--scf-input-text) !important;
+  border: 1px solid var(--scf-input-bg) !important;
+  border-radius: var(--scf-radius) !important;
+  padding: 12px 20px !important;
+  font-size: 15px;
+  line-height: 1.4;
+  outline: none;
+  box-shadow: none !important;
+  transition: border-color .15s ease;
+}
+
+.scf textarea { border-radius: 20px !important; resize: vertical; min-height: 110px; }
+
+.scf select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 18px center !important;
+  padding-right: 40px !important;
+}
+
+.scf input:focus, .scf select:focus, .scf textarea:focus {
+  border-color: var(--scf-button-bg) !important;
+}
+
+.scf input[type="file"] {
+  background: var(--scf-input-bg);
+  border-radius: var(--scf-radius);
+  padding: 10px 20px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.scf__check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.4; color: var(--scf-label); cursor: pointer; }
+.scf__check input { margin-top: 3px; }
+
+.scf__trap { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
+
+.scf__actions { margin-top: 18px; }
+
+.scf .scf__submit {
+  background: var(--scf-button-bg) !important;
+  color: var(--scf-button-text) !important;
+  border: 0 !important;
+  border-radius: var(--scf-radius) !important;
+  padding: 13px 38px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: filter .15s ease;
+}
+
+.scf .scf__submit:hover { filter: brightness(.92); }
+.scf .scf__submit[disabled] { opacity: .65; cursor: wait; }
+
+.scf__error { display: none; color: #d00; font-size: 13px; padding-left: 12px; }
+.scf__field.is-invalid .scf__error { display: block; }
+.scf__field.is-invalid input,
+.scf__field.is-invalid select,
+.scf__field.is-invalid textarea { border-color: #d00 !important; }
+
+.scf__message { display: none; margin-top: 14px; padding: 12px 18px; border-radius: 12px; font-size: 14px; }
+.scf__message.is-success { display: block; background: #e6f6ea; color: #1d6b31; }
+.scf__message.is-error { display: block; background: #fdeaea; color: #a40000; }
+
+@media (max-width: 640px) {
+  .scf__field--half { flex-basis: 100%; }
+}
