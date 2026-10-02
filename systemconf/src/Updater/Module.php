@@ -45,13 +45,13 @@ final class Module implements ModuleInterface
         }
 
         $release = $this->latestRelease();
-        if ($release === null) {
+        if ($release === null || !isset($release['version'], $release['package'])) {
             return $transient;
         }
 
         $basename = plugin_basename(SYSTEMCONF_FILE);
 
-        if (version_compare($release['version'], SYSTEMCONF_VERSION, '>')) {
+        if (version_compare((string) $release['version'], SYSTEMCONF_VERSION, '>')) {
             $transient->response[$basename] = (object) [
                 'slug'        => 'systemconf',
                 'plugin'      => $basename,
@@ -116,7 +116,8 @@ final class Module implements ModuleInterface
     {
         $cached = get_transient(self::CACHE_KEY);
         if (is_array($cached)) {
-            return $cached;
+            // Boş dizi "son denemede sürüm bulunamadı" demektir; tekrar sormadan geç.
+            return isset($cached['version'], $cached['package']) ? $cached : null;
         }
 
         $response = wp_remote_get('https://api.github.com/repos/' . self::REPO . '/releases/latest', [
@@ -132,17 +133,19 @@ final class Module implements ModuleInterface
 
         $data = json_decode((string) wp_remote_retrieve_body($response), true);
         if (!is_array($data) || empty($data['tag_name'])) {
+            set_transient(self::CACHE_KEY, [], 15 * MINUTE_IN_SECONDS);
             return null;
         }
 
         $package = '';
         foreach ($data['assets'] ?? [] as $asset) {
-            if (($asset['name'] ?? '') === self::ASSET) {
-                $package = (string) $asset['browser_download_url'];
+            if (is_array($asset) && ($asset['name'] ?? '') === self::ASSET) {
+                $package = (string) ($asset['browser_download_url'] ?? '');
             }
         }
 
         if ($package === '') {
+            set_transient(self::CACHE_KEY, [], 15 * MINUTE_IN_SECONDS);
             return null;
         }
 
