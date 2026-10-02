@@ -82,7 +82,7 @@
     hideTimer = window.setTimeout(function () {
       root.hidden = true;
       hideTimer = null;
-    }, 350);
+    }, 200);
     if (lastFocused && typeof lastFocused.focus === 'function') {
       lastFocused.focus();
     }

@@ -35,7 +35,7 @@ final class Config
             'show_on'       => self::SHOW_ALL,
             'page_ids'      => [],
             'trigger'       => self::TRIGGER_LOAD,
-            'width_px'      => 800,
+            'width_px'      => 520,
             'bg_color'      => '#ffffff',
             'accent_color'  => '#000000',
         ];
