@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Systemconf;
 
 use Systemconf\Admin\Menu;
+use Systemconf\Tools\Module as ToolsModule;
 use Systemconf\Whatsapp\Module as WhatsappModule;
 
 /**
@@ -30,6 +31,7 @@ final class Plugin
     {
         $this->modules = [
             new WhatsappModule(),
+            new ToolsModule(),
         ];
     }
 
