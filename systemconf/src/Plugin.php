@@ -6,6 +6,7 @@ namespace Systemconf;
 
 use Systemconf\Admin\Menu;
 use Systemconf\Forms\Module as FormsModule;
+use Systemconf\Mail\Module as MailModule;
 use Systemconf\Tools\Module as ToolsModule;
 use Systemconf\Whatsapp\Module as WhatsappModule;
 
@@ -33,6 +34,7 @@ final class Plugin
         $this->modules = [
             new WhatsappModule(),
             new FormsModule(),
+            new MailModule(),
             new ToolsModule(),
         ];
     }
