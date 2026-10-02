@@ -36,7 +36,6 @@ final class Module implements ModuleInterface
             [
                 'type'              => 'array',
                 'sanitize_callback' => [Config::class, 'sanitize'],
-                'default'           => Config::defaults(),
             ]
         );
     }
