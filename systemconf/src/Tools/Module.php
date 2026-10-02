@@ -48,6 +48,51 @@ final class Module implements ModuleInterface
             'callback'            => [$this, 'elementorIndex'],
             'permission_callback' => static fn(): bool => current_user_can('manage_options'),
         ]);
+
+        register_rest_route(self::NAMESPACE, '/elementor-replace-widget', [
+            'methods'             => 'POST',
+            'callback'            => [$this, 'replaceWidget'],
+            'permission_callback' => static fn(): bool => current_user_can('manage_options'),
+        ]);
+    }
+
+    /**
+     * Bir sayfadaki tek bir bileşeni (id ile) yerinde başka bir bileşenle değiştirir.
+     * Gövde: {post_id, widget_id, widget_type, settings}
+     */
+    public function replaceWidget(WP_REST_Request $request)
+    {
+        $postId = (int) $request->get_param('post_id');
+        $widgetId = sanitize_text_field((string) $request->get_param('widget_id'));
+        $widgetType = sanitize_key((string) $request->get_param('widget_type'));
+        $settings = $request->get_param('settings');
+
+        if ($postId <= 0 || $widgetId === '' || $widgetType === '' || !is_array($settings)) {
+            return new WP_Error('systemconf_bad_request', 'post_id, widget_id, widget_type ve settings zorunlu.', ['status' => 400]);
+        }
+
+        $raw = get_post_meta($postId, '_elementor_data', true);
+        $tree = is_string($raw) && $raw !== '' ? json_decode($raw, true) : null;
+
+        if (!is_array($tree)) {
+            return new WP_Error('systemconf_no_data', 'Bu içerikte Elementor verisi yok.', ['status' => 404]);
+        }
+
+        $replaced = 0;
+        $tree = (new WidgetReplacer())->replace($tree, $widgetId, $widgetType, $settings, $replaced);
+
+        if ($replaced === 0) {
+            return new WP_Error('systemconf_widget_not_found', 'Bileşen bulunamadı: ' . $widgetId, ['status' => 404]);
+        }
+
+        update_post_meta($postId, '_elementor_data', wp_slash(wp_json_encode($tree, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+        delete_post_meta($postId, '_elementor_css');
+
+        if (class_exists('\Elementor\Plugin')) {
+            \Elementor\Plugin::$instance->files_manager->clear_cache();
+        }
+
+        return new WP_REST_Response(['post_id' => $postId, 'replaced' => $replaced]);
     }
 
     /** Tek bir yazının/sayfanın Elementor ağacını döndürür. */
