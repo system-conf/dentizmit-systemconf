@@ -27,11 +27,30 @@ final class Module implements ModuleInterface
         return 'Güncelleme';
     }
 
+    private const CHECK_ACTION = 'systemconf_update_check';
+
     public function register(): void
     {
         add_filter('pre_set_site_transient_update_plugins', [$this, 'injectUpdate']);
         add_filter('plugins_api', [$this, 'pluginInfo'], 10, 3);
         add_action('upgrader_process_complete', [$this, 'clearCache'], 10, 0);
+        add_action('admin_post_' . self::CHECK_ACTION, [$this, 'checkNow']);
+    }
+
+    /** "Şimdi kontrol et": önbelleği temizler, WordPress'e yeniden sordurur. */
+    public function checkNow(): void
+    {
+        if (!current_user_can('update_plugins')) {
+            wp_die(esc_html__('Yetkiniz yok.', 'systemconf'));
+        }
+
+        check_admin_referer(self::CHECK_ACTION);
+        $this->clearCache();
+        delete_site_transient('update_plugins');
+        wp_update_plugins();
+
+        wp_safe_redirect(add_query_arg(['page' => 'systemconf', 'tab' => $this->slug(), 'checked' => '1'], admin_url('admin.php')));
+        exit;
     }
 
     /**
@@ -178,9 +197,14 @@ final class Module implements ModuleInterface
             esc_url($release['html_url'])
         );
         printf(
-            '<p><a class="button" href="%s">%s</a></p>',
+            '<p><a class="button" href="%s">%s</a> ',
             esc_url(admin_url('plugins.php')),
             esc_html__('Eklentiler ekranına git', 'systemconf')
+        );
+        printf(
+            '<a class="button button-primary" href="%s">%s</a></p>',
+            esc_url(wp_nonce_url(admin_url('admin-post.php?action=' . self::CHECK_ACTION), self::CHECK_ACTION)),
+            esc_html__('Şimdi kontrol et', 'systemconf')
         );
     }
 }
