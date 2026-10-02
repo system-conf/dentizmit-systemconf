@@ -27,6 +27,14 @@ final class Module implements ModuleInterface
         add_shortcode('systemconf_hizmetler', [$this, 'services']);
         add_shortcode('systemconf_yazilar', [$this, 'posts']);
         add_shortcode('systemconf_arama', [$this, 'search']);
+        add_shortcode('systemconf_subeler', [$this, 'branches']);
+    }
+
+    public function branches(): string
+    {
+        wp_enqueue_style('systemconf-blocks');
+
+        return (new BranchCards())->render();
     }
 
     public function registerAssets(): void
@@ -80,6 +88,7 @@ final class Module implements ModuleInterface
         echo '<li><code>[systemconf_hizmetler]</code> — ' . esc_html__('6 hizmet kartı (dönen kartlar)', 'systemconf') . '</li>';
         echo '<li><code>[systemconf_yazilar skin="cards" count="2"]</code> — ' . esc_html__('son yazılar, büyük kartlar', 'systemconf') . '</li>';
         echo '<li><code>[systemconf_yazilar skin="list" ids="1706,306,1757,1598,1595"]</code> — ' . esc_html__('seçili yazılar, küçük liste', 'systemconf') . '</li>';
+        echo '<li><code>[systemconf_subeler]</code> — ' . esc_html__('şube kartları (görsel, harita, adres, düğmeler)', 'systemconf') . '</li>';
         echo '<li><code>[systemconf_arama]</code> — ' . esc_html__('arama kutusu', 'systemconf') . '</li></ul>';
     }
 }
