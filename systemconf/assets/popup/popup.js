@@ -12,8 +12,11 @@
   var box = root.querySelector('.scpu__box');
   var closeButton = root.querySelector('[data-scpu-close]');
   var DAY_MS = 24 * 60 * 60 * 1000;
+  var repeatDays = parseFloat(config.repeatDays) || 0;
+  var delaySeconds = parseFloat(config.delaySeconds) || 0;
   var lastFocused = null;
   var isOpen = false;
+  var hideTimer = null;
 
   /** Depolama kapalıysa (gizli pencere vb.) null döner; popup yine de çalışır. */
   function readClosedAt() {
@@ -36,11 +39,11 @@
   }
 
   function isSuppressed() {
-    if (!config.repeatDays || config.repeatDays <= 0) {
+    if (repeatDays <= 0) {
       return false;
     }
     var closedAt = readClosedAt();
-    return closedAt !== null && Date.now() - closedAt < config.repeatDays * DAY_MS;
+    return closedAt !== null && Date.now() - closedAt < repeatDays * DAY_MS;
   }
 
   function focusables() {
@@ -52,6 +55,10 @@
       return;
     }
     isOpen = true;
+    if (hideTimer !== null) {
+      window.clearTimeout(hideTimer);
+      hideTimer = null;
+    }
     lastFocused = document.activeElement;
     root.hidden = false;
     document.documentElement.classList.add('scpu-lock');
@@ -72,8 +79,9 @@
     document.documentElement.classList.remove('scpu-lock');
     document.removeEventListener('keydown', onKeydown);
     writeClosedAt();
-    window.setTimeout(function () {
+    hideTimer = window.setTimeout(function () {
       root.hidden = true;
+      hideTimer = null;
     }, 350);
     if (lastFocused && typeof lastFocused.focus === 'function') {
       lastFocused.focus();
@@ -81,7 +89,7 @@
   }
 
   function onKeydown(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' || event.key === 'Esc') {
       close();
       return;
     }
@@ -105,7 +113,7 @@
   }
 
   function armLoadTrigger() {
-    window.setTimeout(open, Math.max(0, config.delaySeconds) * 1000);
+    window.setTimeout(open, Math.max(0, delaySeconds) * 1000);
   }
 
   /** Fare sayfanın üst kenarından dışarı çıkınca (sekme/adres çubuğuna giderken) açılır. */
@@ -113,16 +121,24 @@
     var armed = false;
     window.setTimeout(function () {
       armed = true;
-    }, Math.max(0, config.delaySeconds) * 1000);
+    }, Math.max(0, delaySeconds) * 1000);
 
-    document.addEventListener('mouseout', function (event) {
+    function onMouseOut(event) {
       if (armed && !event.relatedTarget && event.clientY <= 0) {
+        document.removeEventListener('mouseout', onMouseOut);
         open();
       }
-    });
+    }
+
+    document.addEventListener('mouseout', onMouseOut);
   }
 
   closeButton.addEventListener('click', close);
+  root.addEventListener('click', function (e) {
+    if (e.target === root) {
+      close();
+    }
+  });
 
   if (isSuppressed()) {
     return;

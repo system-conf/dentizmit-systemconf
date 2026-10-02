@@ -1,5 +1,9 @@
 .scpu {
   position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   z-index: 2147483000;
   display: flex;
@@ -40,6 +44,8 @@
 .scpu__content img {
   display: block;
   max-width: 100%;
+  max-height: calc(100vh - 120px);
+  width: auto;
   height: auto;
   margin: 0 auto;
 }
@@ -57,9 +63,11 @@
   box-sizing: border-box !important;
   width: 26px !important;
   height: 26px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   background: var(--scpu-accent, #000) !important;
