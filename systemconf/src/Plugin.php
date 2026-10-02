@@ -11,6 +11,7 @@ use Systemconf\Header\Module as HeaderModule;
 use Systemconf\Mail\Module as MailModule;
 use Systemconf\Theme\Module as ThemeModule;
 use Systemconf\Tools\Module as ToolsModule;
+use Systemconf\Updater\Module as UpdaterModule;
 use Systemconf\Whatsapp\Module as WhatsappModule;
 
 /**
@@ -42,6 +43,7 @@ final class Plugin
             new ThemeModule(),
             new HeaderModule(),
             new ToolsModule(),
+            new UpdaterModule(),
         ];
     }
 

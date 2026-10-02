@@ -40,9 +40,15 @@ final class Module implements ModuleInterface
 
     public function enqueue(): void
     {
+        if (is_admin()) {
+            return;
+        }
+
+        wp_enqueue_style('systemconf-header-responsive', SYSTEMCONF_URL . 'assets/header/responsive.css', [], SYSTEMCONF_VERSION);
+
         $ids = self::elementIds();
 
-        if ($ids === [] || is_admin()) {
+        if ($ids === []) {
             return;
         }
 
