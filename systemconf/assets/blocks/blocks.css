@@ -351,3 +351,6 @@ body.scb-overlay-open { overflow: hidden; }
 @media (max-width: 640px) {
   .scb-branches { grid-template-columns: 1fr; }
 }
+
+/* Şube kartları: başlık şeridiyle birlikte kullanılınca içerik boşluğu */
+.scb-branches-wrap { padding: 50px 0 20px; }

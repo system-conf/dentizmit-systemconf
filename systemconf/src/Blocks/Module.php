@@ -30,11 +30,35 @@ final class Module implements ModuleInterface
         add_shortcode('systemconf_subeler', [$this, 'branches']);
     }
 
-    public function branches(): string
+    /** @param array<string, mixed>|string $atts */
+    public function branches($atts): string
     {
         wp_enqueue_style('systemconf-blocks');
 
-        return (new BranchCards())->render();
+        $atts = shortcode_atts(['baslik' => ''], is_array($atts) ? $atts : [], 'systemconf_subeler');
+        $hero = '';
+
+        if ($atts['baslik'] !== '') {
+            wp_enqueue_style('systemconf-theme');
+            $hero = $this->heroBand(sanitize_text_field((string) $atts['baslik']));
+        }
+
+        return $hero . '<div class="scb-branches-wrap">' . (new BranchCards())->render() . '</div>';
+    }
+
+    /** Blog şablonlarındaki koyu başlık şeridini sayfa içinde basar. */
+    private function heroBand(string $title): string
+    {
+        $subtitle = '';
+        $crumbs = [
+            ['label' => 'Anasayfa', 'url' => home_url('/')],
+            ['label' => $title, 'url' => ''],
+        ];
+
+        ob_start();
+        include SYSTEMCONF_DIR . 'templates/parts/hero.php';
+
+        return (string) ob_get_clean();
     }
 
     public function registerAssets(): void
