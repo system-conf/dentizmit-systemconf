@@ -1,0 +1,15 @@
+{"post_id":2874,"replacements":[
+{"widget_id":"6430674","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"1\"]"}},
+{"widget_id":"12031d6","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"2\"]"}},
+{"widget_id":"2d18035","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"3\"]"}},
+{"widget_id":"b7e6ef1","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"4\"]"}},
+{"widget_id":"7bfa38a","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"5\"]"}},
+{"widget_id":"2421809","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"6\"]"}},
+{"widget_id":"dba6260","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"1\"]"}},
+{"widget_id":"1eb444f","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"2\"]"}},
+{"widget_id":"6a04afc","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"3\"]"}},
+{"widget_id":"c02c91f","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"4\"]"}},
+{"widget_id":"11170a5","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"5\"]"}},
+{"widget_id":"91c32e1","widget_type":"shortcode","settings":{"shortcode":"[systemconf_hizmetler kart=\"6\"]"}},
+{"widget_id":"66ebe218","widget_type":"shortcode","settings":{"shortcode":"[systemconf_yazilar skin=\"cards\" count=\"2\"]"}}
+]}
