@@ -100,6 +100,9 @@
 .scf__message.is-success { display: block; background: #e6f6ea; color: #1d6b31; }
 .scf__message.is-error { display: block; background: #fdeaea; color: #a40000; }
 
+/* Randevu formu koyu panel üzerinde durur; etiketler beyaz. */
+.scf--randevu { --scf-label: #fff; }
+
 @media (max-width: 640px) {
   .scf__field--half { flex-basis: 100%; }
 }

@@ -1,0 +1,175 @@
+/* ---- Hizmet kartları (dönen) ---- */
+.scb-services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.scb-flip {
+  display: block;
+  perspective: 1200px;
+  text-decoration: none !important;
+  color: #fff;
+  min-height: 320px;
+}
+
+.scb-flip__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  transition: transform .7s cubic-bezier(.4, .2, .2, 1);
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
+}
+
+.scb-flip:hover .scb-flip__inner,
+.scb-flip:focus-visible .scb-flip__inner { transform: rotateY(180deg); }
+
+.scb-flip__front,
+.scb-flip__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 28px;
+}
+
+.scb-flip__front {
+  background-size: cover;
+  background-position: center;
+}
+
+.scb-flip__shade { position: absolute; inset: 0; background: rgba(0, 0, 0, .38); }
+
+.scb-flip__back {
+  transform: rotateY(180deg);
+  background: linear-gradient(180deg, #db1522 0%, #000 100%);
+}
+
+.scb-flip__title {
+  position: relative;
+  margin: 0;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.scb-flip__text {
+  color: #fff;
+  font-family: "Heebo", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 14px 0 18px;
+}
+
+.scb-flip__button {
+  display: inline-block;
+  padding: 10px 24px;
+  border: 2px solid #fff;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background .2s, color .2s;
+}
+
+.scb-flip:hover .scb-flip__button { background: #fff; color: #000; }
+
+/* ---- Yazı kartları ---- */
+.scb-posts--cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.scb-card {
+  background: #efefef;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.scb-card__media { display: block; aspect-ratio: 4 / 3; overflow: hidden; }
+.scb-card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scb-card__body { padding: 20px 20px 24px; }
+
+.scb-card__title {
+  margin: 0 0 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.scb-card__title a { color: #db0000; text-decoration: none; }
+.scb-card__title a:hover { color: #000; }
+.scb-card__excerpt { margin: 0; color: #444; font-size: 15px; line-height: 1.55; }
+
+/* ---- Küçük yazı listesi ---- */
+.scb-posts--list { display: flex; flex-direction: column; gap: 18px; }
+
+.scb-item { display: flex; gap: 14px; align-items: center; }
+.scb-item__media { flex: 0 0 110px; }
+.scb-item__img { width: 110px; height: 80px; object-fit: cover; border-radius: 10px; display: block; }
+
+.scb-item__title {
+  margin: 0 0 4px;
+  font-family: "Heebo", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.scb-item__title a { color: #f00; text-decoration: none; }
+.scb-item__title a:hover { color: #000; }
+.scb-item__date { font-family: "Heebo", sans-serif; font-size: 12px; color: #000; }
+
+/* ---- Arama kutusu ---- */
+.scb-search { display: flex; width: 100%; }
+
+.scb-search__input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e3e3e3 !important;
+  border-right: 0 !important;
+  border-radius: 6px 0 0 6px !important;
+  padding: 12px 16px !important;
+  font-size: 15px;
+  background: #fff !important;
+}
+
+.scb-search .scb-search__button {
+  background: #cf0000 !important;
+  color: #fff !important;
+  border: 0 !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 0 22px !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.scb-search .scb-search__button:hover { background: #000 !important; }
+
+@media (max-width: 1024px) {
+  .scb-services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .scb-services,
+  .scb-posts--cards { grid-template-columns: 1fr; }
+}

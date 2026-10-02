@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Systemconf;
 
 use Systemconf\Admin\Menu;
+use Systemconf\Blocks\Module as BlocksModule;
 use Systemconf\Forms\Module as FormsModule;
 use Systemconf\Mail\Module as MailModule;
+use Systemconf\Theme\Module as ThemeModule;
 use Systemconf\Tools\Module as ToolsModule;
 use Systemconf\Whatsapp\Module as WhatsappModule;
 
@@ -35,6 +37,8 @@ final class Plugin
             new WhatsappModule(),
             new FormsModule(),
             new MailModule(),
+            new BlocksModule(),
+            new ThemeModule(),
             new ToolsModule(),
         ];
     }

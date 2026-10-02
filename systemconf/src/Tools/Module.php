@@ -57,18 +57,25 @@ final class Module implements ModuleInterface
     }
 
     /**
-     * Bir sayfadaki tek bir bileşeni (id ile) yerinde başka bir bileşenle değiştirir.
+     * Bir sayfadaki bileşenleri (id ile) yerinde başka bileşenlerle değiştirir.
      * Gövde: {post_id, widget_id, widget_type, settings}
+     *   ya da {post_id, replacements: [{widget_id, widget_type, settings}, ...]}
      */
     public function replaceWidget(WP_REST_Request $request)
     {
         $postId = (int) $request->get_param('post_id');
-        $widgetId = sanitize_text_field((string) $request->get_param('widget_id'));
-        $widgetType = sanitize_key((string) $request->get_param('widget_type'));
-        $settings = $request->get_param('settings');
+        $list = $request->get_param('replacements');
 
-        if ($postId <= 0 || $widgetId === '' || $widgetType === '' || !is_array($settings)) {
-            return new WP_Error('systemconf_bad_request', 'post_id, widget_id, widget_type ve settings zorunlu.', ['status' => 400]);
+        if (!is_array($list)) {
+            $list = [[
+                'widget_id'   => $request->get_param('widget_id'),
+                'widget_type' => $request->get_param('widget_type'),
+                'settings'    => $request->get_param('settings'),
+            ]];
+        }
+
+        if ($postId <= 0 || $list === []) {
+            return new WP_Error('systemconf_bad_request', 'post_id ve en az bir değişim zorunlu.', ['status' => 400]);
         }
 
         $raw = get_post_meta($postId, '_elementor_data', true);
@@ -79,10 +86,22 @@ final class Module implements ModuleInterface
         }
 
         $replaced = 0;
-        $tree = (new WidgetReplacer())->replace($tree, $widgetId, $widgetType, $settings, $replaced);
+        $replacer = new WidgetReplacer();
+
+        foreach ($list as $item) {
+            $widgetId = sanitize_text_field((string) ($item['widget_id'] ?? ''));
+            $widgetType = sanitize_key((string) ($item['widget_type'] ?? ''));
+            $settings = $item['settings'] ?? null;
+
+            if ($widgetId === '' || $widgetType === '' || !is_array($settings)) {
+                return new WP_Error('systemconf_bad_request', 'Her değişimde widget_id, widget_type ve settings zorunlu.', ['status' => 400]);
+            }
+
+            $tree = $replacer->replace($tree, $widgetId, $widgetType, $settings, $replaced);
+        }
 
         if ($replaced === 0) {
-            return new WP_Error('systemconf_widget_not_found', 'Bileşen bulunamadı: ' . $widgetId, ['status' => 404]);
+            return new WP_Error('systemconf_widget_not_found', 'Hiçbir bileşen bulunamadı.', ['status' => 404]);
         }
 
         update_post_meta($postId, '_elementor_data', wp_slash(wp_json_encode($tree, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));

@@ -1,0 +1,111 @@
+.sct-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* ---- Başlık şeridi ---- */
+.sct-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 90px 0 70px;
+  color: #fff;
+}
+
+.sct-hero__shade { position: absolute; inset: 0; background: rgba(0, 0, 0, .72); }
+.sct-hero__inner { position: relative; }
+
+.sct-hero__title {
+  margin: 0 0 14px;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.sct-crumbs { font-family: "Heebo", sans-serif; font-size: 14px; color: #ddd; }
+.sct-crumbs a { color: #fff; text-decoration: none; }
+.sct-crumbs a:hover { color: #ff3b3b; }
+.sct-crumbs__sep { margin: 0 10px; opacity: .7; }
+.sct-hero__meta { margin: 14px 0 0; font-size: 14px; color: #fff; }
+
+/* ---- İçerik + kenar çubuğu ---- */
+.sct-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 40px;
+  padding-top: 50px;
+  padding-bottom: 70px;
+}
+
+.sct-post__thumb img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 28px;
+}
+
+.sct-post__content {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #000;
+}
+
+.sct-post__content h2, .sct-post__content h3 { color: #c40000; }
+.sct-post__content img { max-width: 100%; height: auto; border-radius: 8px; }
+
+.sct-sidebar__search { margin-bottom: 28px; }
+
+.sct-sidebar__title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  margin: 0 0 18px;
+  color: #000;
+}
+
+.sct-pagination { margin-top: 36px; }
+.sct-pagination .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.sct-pagination .page-numbers {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #efefef;
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+}
+.sct-pagination .page-numbers.current,
+.sct-pagination .page-numbers:hover { background: #cf0000; color: #fff; }
+
+.sct-empty { font-size: 16px; }
+
+/* ---- 404 ---- */
+.sct-404 { text-align: center; padding: 70px 16px 90px; }
+.sct-404__code { font-family: "Poppins", sans-serif; font-weight: 700; font-size: 96px; color: #cf0000; margin: 0; line-height: 1; }
+.sct-404__text { font-size: 18px; margin: 16px 0 28px; }
+.sct-404__search { max-width: 480px; margin: 32px auto 0; }
+
+.sct-button {
+  display: inline-block;
+  background: #af0505;
+  color: #fff !important;
+  padding: 13px 34px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  font-weight: 600;
+}
+
+.sct-button:hover { background: #000; }
+
+@media (max-width: 900px) {
+  .sct-layout { grid-template-columns: 1fr; }
+  .sct-hero { padding: 60px 0 46px; }
+  .sct-hero__title { font-size: 30px; }
+}
